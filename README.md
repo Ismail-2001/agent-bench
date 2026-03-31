@@ -144,5 +144,5 @@ We welcome contributions from the community! Please read our [CONTRIBUTING.md](C
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by <strong>Daniel López Orta</strong> (Re-architected for FAANG by Antigravity AI)</sub>
+  <sub>Built with ❤️ by <strong>Ismail Sajid</strong> (Re-architected for FAANG by Antigravity AI)</sub>
 </div>
