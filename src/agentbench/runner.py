@@ -5,6 +5,9 @@ from __future__ import annotations
 import asyncio
 import time
 from typing import Optional
+import structlog
+
+logger = structlog.get_logger()
 
 from .adapter import AgentAdapter
 from .evaluators.core import evaluate_criterion
@@ -34,6 +37,9 @@ class Runner:
         limits = task.get("limits", {})
         criteria = task.get("criteria", [])
 
+        log = logger.bind(task_id=task_id)
+        log.info("task_started", input_preview=task_input[:50] if task_input else "conversation")
+
         # Execute the agent
         start_time = time.monotonic()
         try:
@@ -42,8 +48,10 @@ class Runner:
             else:
                 output = await self.adapter.run(task_input)
             latency = time.monotonic() - start_time
+            log.info("task_executed", latency=round(latency, 2))
         except Exception as e:
             latency = time.monotonic() - start_time
+            log.error("task_execution_failed", error=str(e), latency=round(latency, 2))
             return TaskResult(
                 task_id=task_id,
                 status=TaskStatus.ERROR,
