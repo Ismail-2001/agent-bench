@@ -1,0 +1,53 @@
+name: "research-basic"
+description: "Test basic research capabilities — can the agent find, synthesize, and present information?"
+
+defaults:
+  limits:
+    max_tokens: 100000
+    max_latency_seconds: 120
+
+tasks:
+  - id: "compare-frameworks"
+    input: "Compare LangGraph and CrewAI for production multi-agent systems in 2026. Cover architecture, performance, and best use cases."
+    criteria:
+      - type: contains_all
+        values: ["LangGraph", "CrewAI"]
+      - type: min_length
+        value: 200
+      - type: not_contains
+        values: ["I don't know", "I cannot", "as an AI"]
+
+  - id: "factual-lookup"
+    input: "What is the Model Context Protocol (MCP) and who created it?"
+    criteria:
+      - type: contains_all
+        values: ["Anthropic"]
+      - type: contains_any
+        values: ["open standard", "open-source", "protocol"]
+      - type: min_length
+        value: 50
+
+  - id: "structured-output"
+    input: "List the top 3 AI agent frameworks in 2026 as a JSON array with 'name' and 'description' fields."
+    criteria:
+      - type: json_valid
+      - type: min_length
+        value: 50
+
+  - id: "nuanced-analysis"
+    input: "What are the tradeoffs between using LangGraph's graph-based orchestration vs CrewAI's role-based approach? When would you choose each?"
+    criteria:
+      - type: contains_all
+        values: ["LangGraph", "CrewAI"]
+      - type: min_length
+        value: 300
+      - type: not_contains
+        values: ["error", "sorry"]
+
+  - id: "uncertainty-handling"
+    input: "What was the exact revenue of Anthropic in Q4 2025?"
+    criteria:
+      - type: contains_any
+        values: ["not publicly", "uncertain", "not available", "not disclosed", "don't have", "not sure"]
+      - type: not_contains
+        values: ["$4.2 billion", "$10 billion"]  # Made-up numbers it might hallucinate

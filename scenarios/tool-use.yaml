@@ -1,0 +1,32 @@
+name: "tool-use"
+description: "Tests agent's ability to select and use tools correctly."
+
+defaults:
+  limits:
+    max_tokens: 20000
+    max_latency_seconds: 30
+
+tasks:
+  - id: "single-tool-call"
+    input: "What is the weather in Tokyo?"
+    criteria:
+      - type: contains_any
+        values: ["Tokyo", "weather", "degrees", "celsius"]
+      - type: min_length
+        value: 20
+
+  - id: "multi-tool-call"
+    input: "Check the price of NVDA and compare it to MSFT."
+    criteria:
+      - type: contains_all
+        values: ["NVDA", "MSFT"]
+      - type: regex
+        pattern: "\\d+\\.\\d{2}"  # Should contain a price
+
+  - id: "invalid-tool-params"
+    input: "Search for a flight from New York to London but don't provide a date."
+    criteria:
+      - type: contains_any
+        values: ["date", "when", "departure", "specify", "missing"]
+      - type: not_contains
+        values: ["I don't know", "error"]
